@@ -73,8 +73,9 @@ export function SubscriptionPlanCards({
       {hasActivePaidSubscription ? (
         <p className="mb-4 rounded-md border border-border bg-background-muted p-3 text-sm text-foreground-muted">
           Plan changes apply at the start of your next billing period. We do not charge
-          immediately for upgrades or issue partial refunds for downgrades, because Mollie
-          proration is not reliable for every payment method.
+          immediately for upgrades or issue partial refunds for downgrades, because
+          our payment provider does not support reliable proration for every
+          payment method.
         </p>
       ) : null}
 

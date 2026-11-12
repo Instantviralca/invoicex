@@ -38,5 +38,5 @@ test("pricing shows all plans", async ({ page }) => {
   await expect(page.getByText("Starter")).toBeVisible();
   await expect(page.getByText("Pro")).toBeVisible();
   await expect(page.getByText("Business")).toBeVisible();
-  await expect(page.getByText(/Mollie/i)).toBeVisible();
+  await expect(page.getByText(/secure checkout/i)).toBeVisible();
 });

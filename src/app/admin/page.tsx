@@ -179,8 +179,8 @@ export default async function AdminDashboardPage({
                   <th className="px-3 py-2 font-medium">Name</th>
                   <th className="px-3 py-2 font-medium">Plan</th>
                   <th className="px-3 py-2 font-medium">Status</th>
-                  <th className="px-3 py-2 font-medium">Mollie customer</th>
-                  <th className="px-3 py-2 font-medium">Mollie subscription</th>
+                  <th className="px-3 py-2 font-medium">Payment customer ID</th>
+                  <th className="px-3 py-2 font-medium">Subscription ID</th>
                 </tr>
               </thead>
               <tbody>

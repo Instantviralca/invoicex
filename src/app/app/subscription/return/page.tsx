@@ -20,7 +20,7 @@ export default async function SubscriptionReturnPage() {
     <div>
       <PageHeader
         title={title}
-        description="We verify your payment directly with Mollie — not from the redirect alone."
+        description="We confirm your payment with our payment provider — not from the redirect alone."
       />
 
       <Card className="max-w-2xl">

@@ -70,8 +70,8 @@ export const privacySections: LegalSection[] = [
           </li>
           <li>
             <strong>Billing data:</strong> subscription plan, billing interval,
-            and payment status. Card details are processed by Mollie; we do not
-            store full card numbers.
+            and payment status. Card details are processed by our payment
+            provider; we do not store full card numbers.
           </li>
           <li>
             <strong>Technical data:</strong> IP address, browser type, device
@@ -116,8 +116,9 @@ export const privacySections: LegalSection[] = [
         <p>We share data only where necessary:</p>
         <ul>
           <li>
-            <strong>Mollie:</strong> payment processing for paid subscriptions.
-            Mollie processes payment details according to its own privacy policy.
+            <strong>Payment provider:</strong> payment processing for paid
+            subscriptions. The provider processes payment details according to
+            its own privacy policy.
           </li>
           <li>
             <strong>Infrastructure providers:</strong> hosting, email delivery,
@@ -454,13 +455,13 @@ export const refundSections: LegalSection[] = [
     ),
   },
   {
-    id: "mollie",
+    id: "payment-processor",
     title: "5. Payment processor",
     content: (
       <p>
-        Payments are processed by Mollie. Approved refunds are returned via the
-        original payment method where possible. Processing times depend on your
-        bank or card issuer.
+        Payments are processed by our payment provider. Approved refunds are
+        returned via the original payment method where possible. Processing times
+        depend on your bank or card issuer.
       </p>
     ),
   },
@@ -578,8 +579,9 @@ export const cookieSections: LegalSection[] = [
     title: "3. Third-party cookies",
     content: (
       <p>
-        Mollie may set cookies when you complete checkout on their payment pages.
-        Third-party cookies are governed by the relevant provider&apos;s policy.
+        Our payment provider may set cookies when you complete checkout on their
+        payment pages. Third-party cookies are governed by the relevant
+        provider&apos;s policy.
       </p>
     ),
   },
