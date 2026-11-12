@@ -4,6 +4,7 @@ import {
   PutObjectCommand,
   S3Client,
 } from "@aws-sdk/client-s3";
+import { del, get, put } from "@vercel/blob";
 import { nanoid } from "nanoid";
 import { db } from "@/db";
 import { fileAssets } from "@/db/schema";
@@ -17,6 +18,14 @@ const MAX_PDF_BYTES = 10 * 1024 * 1024;
 const MAX_EXPORT_BYTES = 50 * 1024 * 1024;
 
 export type StoragePurpose = "logo" | "pdf" | "export" | "temp";
+
+type StorageBackend = "vercel-blob" | "s3";
+
+function getBlobToken(): string | null {
+  const token = process.env.BLOB_READ_WRITE_TOKEN?.trim();
+  if (!token || token === "replace_me") return null;
+  return token;
+}
 
 function getS3Client(): S3Client | null {
   const accessKeyId = process.env.S3_ACCESS_KEY_ID?.trim();
@@ -41,8 +50,29 @@ function getS3Client(): S3Client | null {
   });
 }
 
+function resolveStorageBackend(): StorageBackend | null {
+  const preference = process.env.STORAGE_BACKEND?.trim().toLowerCase();
+
+  if (preference === "s3") {
+    return getS3Client() ? "s3" : null;
+  }
+  if (preference === "vercel-blob") {
+    return getBlobToken() ? "vercel-blob" : null;
+  }
+
+  if (getBlobToken()) return "vercel-blob";
+  if (getS3Client()) return "s3";
+  return null;
+}
+
 function getBucket(): string {
   return process.env.S3_BUCKET?.trim() ?? "invoicerush-dev";
+}
+
+function blobAccessForPurpose(
+  purpose: StoragePurpose,
+): "public" | "private" {
+  return purpose === "logo" ? "public" : "private";
 }
 
 function sanitiseFilename(filename: string): string {
@@ -104,6 +134,46 @@ export function validateUpload(
   }
 }
 
+async function persistObject(
+  storageKey: string,
+  buffer: Buffer,
+  mimeType: string,
+  purpose: StoragePurpose,
+): Promise<string | undefined> {
+  const backend = resolveStorageBackend();
+
+  if (backend === "vercel-blob") {
+    const blob = await put(storageKey, buffer, {
+      access: blobAccessForPurpose(purpose),
+      contentType: mimeType,
+      addRandomSuffix: false,
+      allowOverwrite: true,
+      token: getBlobToken() ?? undefined,
+    });
+    return purpose === "logo" ? blob.url : undefined;
+  }
+
+  if (backend === "s3") {
+    const client = getS3Client()!;
+    await client.send(
+      new PutObjectCommand({
+        Bucket: getBucket(),
+        Key: storageKey,
+        Body: buffer,
+        ContentType: mimeType,
+      }),
+    );
+    const publicBase = process.env.S3_PUBLIC_BASE_URL?.replace(/\/$/, "");
+    return publicBase ? `${publicBase}/${storageKey}` : undefined;
+  }
+
+  if (process.env.NODE_ENV === "development") {
+    return undefined;
+  }
+
+  throw new Error("Object storage is not configured.");
+}
+
 export async function uploadBuffer(input: {
   workspaceId: string;
   purpose: StoragePurpose;
@@ -120,21 +190,12 @@ export async function uploadBuffer(input: {
     input.filename,
   );
 
-  const client = getS3Client();
-  if (client) {
-    await client.send(
-      new PutObjectCommand({
-        Bucket: getBucket(),
-        Key: storageKey,
-        Body: input.buffer,
-        ContentType: input.mimeType,
-      }),
-    );
-  } else if (process.env.NODE_ENV === "development") {
-    // Development fallback: record metadata without remote storage.
-  } else {
-    throw new Error("Object storage is not configured.");
-  }
+  const publicUrl = await persistObject(
+    storageKey,
+    input.buffer,
+    input.mimeType,
+    input.purpose,
+  );
 
   const [asset] = await db
     .insert(fileAssets)
@@ -149,9 +210,6 @@ export async function uploadBuffer(input: {
     })
     .returning({ id: fileAssets.id });
 
-  const publicBase = process.env.S3_PUBLIC_BASE_URL?.replace(/\/$/, "");
-  const publicUrl = publicBase ? `${publicBase}/${storageKey}` : undefined;
-
   return {
     fileAssetId: asset!.id,
     storageKey,
@@ -159,44 +217,91 @@ export async function uploadBuffer(input: {
   };
 }
 
-export async function downloadBuffer(storageKey: string): Promise<Buffer> {
-  const client = getS3Client();
-  if (!client) {
-    if (process.env.NODE_ENV === "development") {
-      return Buffer.from("");
+function purposeFromStorageKey(storageKey: string): StoragePurpose {
+  const match = storageKey.match(/^workspaces\/[^/]+\/([^/]+)\//);
+  const segment = match?.[1];
+  if (
+    segment === "logo" ||
+    segment === "pdf" ||
+    segment === "export" ||
+    segment === "temp"
+  ) {
+    return segment;
+  }
+  return "pdf";
+}
+
+async function readObjectBuffer(storageKey: string): Promise<Buffer> {
+  const purposeHint = purposeFromStorageKey(storageKey);
+  const backend = resolveStorageBackend();
+
+  if (backend === "vercel-blob") {
+    const result = await get(storageKey, {
+      access: blobAccessForPurpose(purposeHint),
+      token: getBlobToken() ?? undefined,
+    });
+
+    if (!result || result.statusCode !== 200 || !result.stream) {
+      throw new Error("File not found in storage.");
     }
-    throw new Error("Object storage is not configured.");
+
+    const arrayBuffer = await new Response(result.stream).arrayBuffer();
+    return Buffer.from(arrayBuffer);
   }
 
-  const response = await client.send(
-    new GetObjectCommand({
-      Bucket: getBucket(),
-      Key: storageKey,
-    }),
-  );
+  if (backend === "s3") {
+    const client = getS3Client()!;
+    const response = await client.send(
+      new GetObjectCommand({
+        Bucket: getBucket(),
+        Key: storageKey,
+      }),
+    );
 
-  const body = response.Body;
-  if (!body) throw new Error("File not found in storage.");
+    const body = response.Body;
+    if (!body) throw new Error("File not found in storage.");
 
-  const chunks: Uint8Array[] = [];
-  for await (const chunk of body as AsyncIterable<Uint8Array>) {
-    chunks.push(chunk);
+    const chunks: Uint8Array[] = [];
+    for await (const chunk of body as AsyncIterable<Uint8Array>) {
+      chunks.push(chunk);
+    }
+    return Buffer.concat(chunks);
   }
-  return Buffer.concat(chunks);
+
+  if (process.env.NODE_ENV === "development") {
+    return Buffer.from("");
+  }
+
+  throw new Error("Object storage is not configured.");
+}
+
+export async function downloadBuffer(storageKey: string): Promise<Buffer> {
+  return readObjectBuffer(storageKey);
 }
 
 export async function deleteStoredObject(storageKey: string): Promise<void> {
-  const client = getS3Client();
-  if (!client) return;
+  const backend = resolveStorageBackend();
 
-  await client.send(
-    new DeleteObjectCommand({
-      Bucket: getBucket(),
-      Key: storageKey,
-    }),
-  );
+  if (backend === "vercel-blob") {
+    await del(storageKey, { token: getBlobToken() ?? undefined });
+    return;
+  }
+
+  if (backend === "s3") {
+    const client = getS3Client()!;
+    await client.send(
+      new DeleteObjectCommand({
+        Bucket: getBucket(),
+        Key: storageKey,
+      }),
+    );
+  }
 }
 
 export function isStorageConfigured(): boolean {
-  return getS3Client() !== null;
+  return resolveStorageBackend() !== null;
+}
+
+export function getActiveStorageBackend(): StorageBackend | null {
+  return resolveStorageBackend();
 }

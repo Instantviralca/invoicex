@@ -74,7 +74,7 @@ See `.env.example` for the full commented list. Required for a working local app
 
 For billing: `MOLLIE_API_KEY`, `MOLLIE_WEBHOOK_URL`  
 For email: `RESEND_API_KEY`, `EMAIL_FROM`, `SUPPORT_INBOX`  
-For uploads: `S3_*`  
+For uploads on Vercel: **Storage → Blob** (sets `BLOB_READ_WRITE_TOKEN`), or optional `S3_*`  
 For cron jobs: `CRON_SECRET`  
 For admin bootstrap: `ADMIN_BOOTSTRAP_EMAIL`, `ADMIN_BOOTSTRAP_PASSWORD`
 
