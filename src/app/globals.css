@@ -1,0 +1,296 @@
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
+
+/* ═══════════════════════════════════════════════════════════════
+   InvoiceX design tokens
+   Slate navy · teal brand · cool sky accents · calm neutrals
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  /* Page & surfaces */
+  --background: #f4f7f8;
+  --background-elevated: #ffffff;
+  --background-muted: #eaf0f2;
+  --background-subtle: #dfe8eb;
+  --background-navy: #0b1f24;
+  --background-navy-soft: #133039;
+  --background-lavender: #e8f7f6;
+  --background-sky: #dff5f4;
+
+  --foreground: #0b1f24;
+  --foreground-muted: #3d4f68;
+  --foreground-subtle: #6b7c93;
+  --foreground-on-dark: #f5f7fb;
+  --foreground-on-dark-muted: #a8b6cb;
+
+  /* Brand */
+  --brand: #0e7c86;
+  --brand-foreground: #ffffff;
+  --brand-muted: #c9eef0;
+  --brand-hover: #0c6b73;
+  --brand-deep: #095a61;
+  --brand-glow: rgb(14 124 134 / 0.2);
+
+  /* Secondary accent */
+  --accent: #3b6cf4;
+  --accent-muted: #e3e9ff;
+
+  /* Status */
+  --success: #059669;
+  --success-foreground: #ffffff;
+  --success-muted: #d1fae5;
+
+  --warning: #d97706;
+  --warning-foreground: #ffffff;
+  --warning-muted: #fef3c7;
+
+  --info: #6366f1;
+  --info-muted: #e0e7ff;
+
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --destructive-muted: #fee2e2;
+
+  /* Chrome */
+  --border: #d8e0ec;
+  --border-strong: #b8c4d6;
+  --border-soft: #e8eef6;
+  --input: #d8e0ec;
+  --ring: #0e7c86;
+
+  --card: #ffffff;
+  --card-foreground: #0a1628;
+  --popover: #ffffff;
+  --popover-foreground: #0a1628;
+
+  /* Elevation */
+  --shadow-xs: 0 1px 2px rgb(10 22 40 / 0.04);
+  --shadow-sm: 0 1px 3px rgb(10 22 40 / 0.06), 0 1px 2px rgb(10 22 40 / 0.04);
+  --shadow-md: 0 4px 12px rgb(10 22 40 / 0.08), 0 2px 4px rgb(10 22 40 / 0.04);
+  --shadow-lg: 0 12px 32px rgb(10 22 40 / 0.1), 0 4px 8px rgb(10 22 40 / 0.05);
+  --shadow-xl: 0 24px 48px rgb(10 22 40 / 0.12), 0 8px 16px rgb(10 22 40 / 0.06);
+  --shadow-glow: 0 0 0 1px rgb(14 124 134 / 0.1), 0 16px 40px rgb(14 124 134 / 0.14);
+
+  --radius: 0.625rem;
+  --radius-pill: 9999px;
+
+  --container-marketing: 72rem;
+  --container-narrow: 40rem;
+  --container-wide: 80rem;
+
+  --focus-ring: 0 0 0 3px rgb(14 124 134 / 0.24);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-background-elevated: var(--background-elevated);
+  --color-background-muted: var(--background-muted);
+  --color-background-subtle: var(--background-subtle);
+  --color-background-navy: var(--background-navy);
+  --color-background-navy-soft: var(--background-navy-soft);
+  --color-background-lavender: var(--background-lavender);
+  --color-background-sky: var(--background-sky);
+
+  --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-foreground-subtle: var(--foreground-subtle);
+  --color-foreground-on-dark: var(--foreground-on-dark);
+  --color-foreground-on-dark-muted: var(--foreground-on-dark-muted);
+
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-brand-muted: var(--brand-muted);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-deep: var(--brand-deep);
+
+  --color-accent: var(--accent);
+  --color-accent-muted: var(--accent-muted);
+
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-success-muted: var(--success-muted);
+
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-warning-muted: var(--warning-muted);
+
+  --color-info: var(--info);
+  --color-info-muted: var(--info-muted);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive-muted: var(--destructive-muted);
+
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-border-soft: var(--border-soft);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --font-sans: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display-face), ui-serif, Georgia, "Times New Roman", serif;
+  --font-mono: ui-monospace, "Cascadia Code", "Segoe UI Mono", monospace;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 4px);
+  --radius-xl: calc(var(--radius) + 8px);
+  --radius-2xl: calc(var(--radius) + 14px);
+
+  --shadow-xs: var(--shadow-xs);
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+  --shadow-glow: var(--shadow-glow);
+}
+
+*,
+*::before,
+*::after {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01" 1, "cv11" 1, "rlig" 1, "calt" 1, "tnum" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  /* Inherit colour from parent so navy / branded surfaces stay readable */
+}
+
+.font-tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--brand-muted);
+  color: var(--foreground);
+}
+
+/* Marketing atmosphere */
+.marketing-mesh {
+  background-color: var(--background);
+  background-image:
+    radial-gradient(ellipse 80% 60% at 10% -10%, rgb(14 124 134 / 0.14), transparent 55%),
+    radial-gradient(ellipse 60% 50% at 95% 5%, rgb(59 108 244 / 0.1), transparent 50%),
+    radial-gradient(ellipse 50% 40% at 50% 100%, rgb(14 124 134 / 0.07), transparent 60%);
+}
+
+.marketing-grid {
+  background-image:
+    linear-gradient(rgb(10 22 40 / 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(10 22 40 / 0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 20%, transparent 75%);
+}
+
+.paper-sheet {
+  background: #ffffff;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-soft);
+}
+
+.surface-card {
+  background: var(--card);
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-xl);
+}
+
+.surface-card-hover {
+  transition:
+    box-shadow 180ms ease,
+    transform 180ms ease,
+    border-color 180ms ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .surface-card-hover:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+    border-color: var(--border);
+  }
+}
+
+.nav-scrolled {
+  background: rgb(245 247 251 / 0.86);
+  backdrop-filter: saturate(1.2) blur(12px);
+  border-bottom-color: var(--border);
+  box-shadow: var(--shadow-xs);
+}
+
+.sidebar-active {
+  background: linear-gradient(90deg, rgb(14 124 134 / 0.14), rgb(14 124 134 / 0.05));
+  color: var(--brand-deep);
+  box-shadow: inset 3px 0 0 var(--brand);
+}
+
+.bg-background-navy .sidebar-active,
+.bg-background-navy-soft .sidebar-active {
+  background: linear-gradient(90deg, rgb(14 124 134 / 0.34), rgb(14 124 134 / 0.12));
+  color: var(--foreground-on-dark);
+  box-shadow: inset 3px 0 0 #2dd4bf;
+}
+
+.app-shell-main {
+  background:
+    radial-gradient(ellipse 90% 60% at 100% 0%, rgb(14 124 134 / 0.06), transparent 55%),
+    var(--background);
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .animate-fade-up {
+    animation: fade-up 420ms ease-out both;
+  }
+}
