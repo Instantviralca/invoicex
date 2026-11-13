@@ -1,4 +1,5 @@
 import { LegalDocument } from "@/components/marketing/legal-document";
+import { legalLastUpdated } from "@/config/brand";
 import { cancellationSections } from "@/lib/legal-content";
 import { createPageMetadata } from "@/lib/metadata";
 
@@ -14,7 +15,7 @@ export default function SubscriptionCancellationPage() {
     <LegalDocument
       title="Subscription Cancellation Policy"
       description="Cancel online at any time. Access continues until the end of your paid period."
-      lastUpdated="21 September 2026"
+      lastUpdated={legalLastUpdated}
       sections={cancellationSections}
     />
   );

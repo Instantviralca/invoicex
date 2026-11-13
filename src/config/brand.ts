@@ -248,7 +248,16 @@ export const pricingNotes = {
 
 export const serviceDisclaimer = `${brand.productName} provides document and business administration software. Users remain responsible for checking their invoices, quotations, tax treatment, VAT obligations, legal requirements, and accounting records. ${brand.productName} is not a bank, accounting firm, tax adviser, financial adviser, payment processor, or regulated financial service.`;
 
+/** Merchant onboarding: clarify what our payment partner is used for. */
+export const subscriptionBillingClarity =
+  `${brand.productName} charges registered account holders only for access to the software (Free and paid subscription plans billed in GBP). ` +
+  `Our licensed payment partner processes those subscription fees; we do not store full card numbers. ` +
+  `We do not process, hold, or route card or bank payments from your clients to you — you record payment status in your workspace and receive client payments through your own bank or payment arrangements.`;
+
 export const cookieConsentVersion = "2026-03-01";
+
+/** Legal policy “Last updated” line (UK date). Bump when policies materially change. */
+export const legalLastUpdated = "13 November 2026";
 
 export function formatPriceFromPence(
   pence: number,

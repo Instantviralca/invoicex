@@ -1,4 +1,5 @@
 import { LegalDocument } from "@/components/marketing/legal-document";
+import { legalLastUpdated } from "@/config/brand";
 import { cookieSections } from "@/lib/legal-content";
 import { createPageMetadata } from "@/lib/metadata";
 
@@ -14,7 +15,7 @@ export default function CookiePolicyPage() {
     <LegalDocument
       title="Cookie Policy"
       description="Information about cookies and similar technologies used on InvoiceX."
-      lastUpdated="21 September 2026"
+      lastUpdated={legalLastUpdated}
       sections={cookieSections}
     />
   );

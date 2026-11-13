@@ -8,9 +8,14 @@ import {
   parseFormBody,
   RemotePaymentError,
 } from "@/lib/mollie/remote-payments";
+import { isMollieRemotePaymentServerEnabled } from "@/lib/mollie/remote-payment-enabled";
 import { logger } from "@/lib/logger";
 
 export const runtime = "nodejs";
+
+function remoteDisabledResponse(): Response {
+  return new Response("Not found", { status: 404 });
+}
 
 /**
  * WooCommerce Mollie remote-payment server endpoints.
@@ -18,6 +23,10 @@ export const runtime = "nodejs";
  * Also reachable via site-root rewrites (?ro=1 → this route).
  */
 export async function GET(request: Request) {
+  if (!isMollieRemotePaymentServerEnabled()) {
+    return remoteDisabledResponse();
+  }
+
   const url = new URL(request.url);
 
   try {
@@ -43,10 +52,14 @@ export async function GET(request: Request) {
     return remoteErrorResponse(error);
   }
 
-  return new Response("Remote payment endpoint", { status: 200 });
+  return remoteDisabledResponse();
 }
 
 export async function POST(request: Request) {
+  if (!isMollieRemotePaymentServerEnabled()) {
+    return remoteDisabledResponse();
+  }
+
   const url = new URL(request.url);
 
   try {

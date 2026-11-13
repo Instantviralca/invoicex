@@ -1,7 +1,12 @@
 import Link from "next/link";
 import { Building2, FileText, Mail, Shield } from "lucide-react";
 import { Container } from "@/components/marketing/container";
-import { brand, company, serviceDisclaimer } from "@/config/brand";
+import {
+  brand,
+  company,
+  serviceDisclaimer,
+  subscriptionBillingClarity,
+} from "@/config/brand";
 import { createPageMetadata } from "@/lib/metadata";
 
 export const metadata = createPageMetadata({
@@ -27,6 +32,7 @@ const pillars = [
           {brand.productName} is sold only through {brand.domain}. Subscriptions are billed in GBP;
           checkout is handled by our payment partner and we do not store card numbers.
         </p>
+        <p className="mt-4">{subscriptionBillingClarity}</p>
       </>
     ),
   },

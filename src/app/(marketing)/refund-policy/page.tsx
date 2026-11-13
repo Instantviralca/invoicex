@@ -1,4 +1,5 @@
 import { LegalDocument } from "@/components/marketing/legal-document";
+import { legalLastUpdated } from "@/config/brand";
 import { refundSections } from "@/lib/legal-content";
 import { createPageMetadata } from "@/lib/metadata";
 
@@ -14,7 +15,7 @@ export default function RefundPolicyPage() {
     <LegalDocument
       title="Refund Policy"
       description="When refunds may be available for InvoiceX paid subscriptions."
-      lastUpdated="21 September 2026"
+      lastUpdated={legalLastUpdated}
       sections={refundSections}
     />
   );

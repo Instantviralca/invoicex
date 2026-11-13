@@ -5,6 +5,7 @@ import {
   cookieConsentVersion,
   pricingNotes,
   serviceDisclaimer,
+  subscriptionBillingClarity,
 } from "@/config/brand";
 import type { LegalSection } from "@/components/marketing/legal-document";
 
@@ -251,6 +252,7 @@ export const termsSections: LegalSection[] = [
           billing, access reports, and collaborate as a team.
         </p>
         <p>{serviceDisclaimer}</p>
+        <p>{subscriptionBillingClarity}</p>
       </>
     ),
   },
@@ -282,6 +284,7 @@ export const termsSections: LegalSection[] = [
           {pricingNotes.renewal}
         </p>
         <p>{pricingNotes.processor}</p>
+        <p>{subscriptionBillingClarity}</p>
         <p>
           Refunds are handled under our{" "}
           <Link href="/refund-policy">Refund Policy</Link>. Cancellation is
@@ -384,10 +387,10 @@ export const termsSections: LegalSection[] = [
     title: "10. Governing law",
     content: (
       <p>
-        These Terms are governed by the laws of Scotland. Disputes are subject to
-        the exclusive jurisdiction of the Scottish courts, without prejudice to
-        mandatory consumer rights that may apply where you are resident elsewhere
-        in the United Kingdom.
+        These Terms are governed by the laws of England and Wales. Disputes are
+        subject to the exclusive jurisdiction of the courts of England and Wales,
+        without prejudice to mandatory consumer rights that may apply where you
+        are resident elsewhere in the United Kingdom.
       </p>
     ),
   },

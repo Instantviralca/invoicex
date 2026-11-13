@@ -1,4 +1,5 @@
 import { LegalDocument } from "@/components/marketing/legal-document";
+import { legalLastUpdated } from "@/config/brand";
 import { privacySections } from "@/lib/legal-content";
 import { createPageMetadata } from "@/lib/metadata";
 
@@ -14,7 +15,7 @@ export default function PrivacyPage() {
     <LegalDocument
       title="Privacy Policy"
       description="How we collect, use, store, and protect personal data when you use InvoiceX."
-      lastUpdated="21 September 2026"
+      lastUpdated={legalLastUpdated}
       sections={privacySections}
     />
   );

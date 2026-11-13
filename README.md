@@ -20,7 +20,7 @@ InvoiceX provides document and business administration software. It is **not** a
 - Tailwind CSS + accessible UI components
 - PostgreSQL + Drizzle ORM
 - Auth.js (NextAuth v5) credentials authentication
-- Mollie (@mollie/api-client) for **InvoiceRush subscription billing only**
+- Mollie (@mollie/api-client) for **InvoiceX subscription billing only** (not end-customer invoice payments)
 - Resend + React Email for transactional email
 - pdfkit for server-side PDF generation
 - S3-compatible object storage for logos and exports
@@ -102,7 +102,9 @@ Asset licensing notes: **`docs/ASSETS.md`**
 
 ## Mollie setup
 
-InvoiceRush uses Mollie only to collect **SaaS subscription fees** from InvoiceRush users. Version one does **not** collect end-customer invoice payments.
+InvoiceX uses Mollie only to collect **SaaS subscription fees** from registered account holders. **invoicex.store does not** process, hold, or route card or bank payments from your users’ clients to you.
+
+An optional WooCommerce “remote payment server” exists for separate self-hosted integrations. It is **disabled in production by default** (`MOLLIE_REMOTE_ENABLED` must be set explicitly) and is **not** part of the public InvoiceX product on invoicex.store.
 
 ### Test mode
 
@@ -136,7 +138,7 @@ Mollie approval is **not** guaranteed.
 
 1. Add your sending domain in Resend.
 2. Publish SPF, DKIM, and DMARC DNS records as instructed by Resend.
-3. Set `EMAIL_FROM` to a verified address (e.g. `InvoiceRush <noreply@dmrush.store>`).
+3. Set `EMAIL_FROM` to a verified address (e.g. `InvoiceX <noreply@invoicex.store>`).
 4. Test verification, password reset, invoice/quote send, and billing emails.
 
 Without `RESEND_API_KEY`, development logs emails and does **not** claim delivery.
@@ -191,7 +193,7 @@ Configure your host’s scheduler (e.g. Vercel Cron, systemd timer, GitHub Actio
 
 - [ ] Real production domain + HTTPS
 - [ ] Live company information verified on site and in `src/config/brand.ts`
-- [ ] Support inbox tested (`support@dmrush.store`)
+- [ ] Support inbox tested (`sales@invoicex.store`)
 - [ ] Legal pages reviewed by a UK solicitor
 - [ ] Mollie live keys + webhook configured
 - [ ] Live pricing verified (monthly/annual)
@@ -214,7 +216,7 @@ Configure your host’s scheduler (e.g. Vercel Cron, systemd timer, GitHub Actio
 - Security headers via middleware (CSP, HSTS in production, Referrer-Policy, Permissions-Policy)
 - Passwords hashed with bcrypt; reset tokens hashed at rest
 - Logo uploads restricted to PNG/JPEG/WebP
-- Mollie secrets server-only; card data never stored by InvoiceRush
+- Mollie secrets server-only; card data never stored by InvoiceX
 
 ---
 
@@ -230,5 +232,5 @@ Configure your host’s scheduler (e.g. Vercel Cron, systemd timer, GitHub Actio
 
 ## Licence and contact
 
-Proprietary software operated by DMRUSH LIMITED.  
-Support: support@dmrush.store
+Proprietary software operated by THE HOUSE OF VEYNOR LTD (company number 17561169).  
+Support: sales@invoicex.store

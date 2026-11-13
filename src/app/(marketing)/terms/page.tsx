@@ -1,4 +1,5 @@
 import { LegalDocument } from "@/components/marketing/legal-document";
+import { legalLastUpdated } from "@/config/brand";
 import { termsSections } from "@/lib/legal-content";
 import { createPageMetadata } from "@/lib/metadata";
 
@@ -14,7 +15,7 @@ export default function TermsPage() {
     <LegalDocument
       title="Terms of Service"
       description="The contract between you and THE HOUSE OF VEYNOR LTD for use of InvoiceX."
-      lastUpdated="21 September 2026"
+      lastUpdated={legalLastUpdated}
       sections={termsSections}
     />
   );

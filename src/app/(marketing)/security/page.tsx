@@ -1,4 +1,5 @@
 import { LegalDocument } from "@/components/marketing/legal-document";
+import { legalLastUpdated } from "@/config/brand";
 import { securitySections } from "@/lib/legal-content";
 import { createPageMetadata } from "@/lib/metadata";
 
@@ -14,7 +15,7 @@ export default function SecurityPage() {
     <LegalDocument
       title="Security"
       description="An overview of how we protect InvoiceX and your responsibilities as a user."
-      lastUpdated="21 September 2026"
+      lastUpdated={legalLastUpdated}
       sections={securitySections}
     />
   );

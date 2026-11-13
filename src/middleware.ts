@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import NextAuth from "next-auth";
 import authConfig from "@/auth.config";
+import { isMollieRemotePaymentServerEnabled } from "@/lib/mollie/remote-payment-enabled";
 
 const { auth } = NextAuth(authConfig);
 
@@ -76,6 +77,9 @@ export default auth((request) => {
       search.has("rof"));
 
   if (isRemotePaymentRoot) {
+    if (!isMollieRemotePaymentServerEnabled()) {
+      return applySecurityHeaders(NextResponse.next(), pathname);
+    }
     const rewriteUrl = request.nextUrl.clone();
     rewriteUrl.pathname = "/api/remote-payments";
     return applySecurityHeaders(

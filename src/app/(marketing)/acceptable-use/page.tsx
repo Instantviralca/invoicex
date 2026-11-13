@@ -1,4 +1,5 @@
 import { LegalDocument } from "@/components/marketing/legal-document";
+import { legalLastUpdated } from "@/config/brand";
 import { acceptableUseSections } from "@/lib/legal-content";
 import { createPageMetadata } from "@/lib/metadata";
 
@@ -14,7 +15,7 @@ export default function AcceptableUsePage() {
     <LegalDocument
       title="Acceptable Use Policy"
       description="Permitted and prohibited uses of the InvoiceX platform."
-      lastUpdated="21 September 2026"
+      lastUpdated={legalLastUpdated}
       sections={acceptableUseSections}
     />
   );

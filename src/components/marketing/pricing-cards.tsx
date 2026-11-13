@@ -8,6 +8,7 @@ import {
   formatPriceFromPence,
   plans,
   pricingNotes,
+  subscriptionBillingClarity,
   type BillingInterval,
   type PlanId,
 } from "@/config/brand";
@@ -200,6 +201,7 @@ export function PricingCards({
             <p>{pricingNotes.cancellation}</p>
             <p>{pricingNotes.freePlan}</p>
             <p>{pricingNotes.processor}</p>
+            <p>{subscriptionBillingClarity}</p>
           </div>
           <div className="surface-card space-y-3 p-5 text-sm leading-relaxed text-foreground-muted sm:col-span-2">
             <p className="font-semibold text-foreground">Fair use and policies</p>
